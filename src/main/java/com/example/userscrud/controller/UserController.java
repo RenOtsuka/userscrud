@@ -51,8 +51,10 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/{email}")
-	public void deleteUser(@PathVariable String email) {
+	public ResponseEntity<String> deleteUser(@PathVariable String email) {
+		User user = userService.getUser(email);
 		userService.deleteUser(email);
+		return new ResponseEntity<String>("Successfully Deleted User " + user.getName(), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/deleteName/{name}")
@@ -60,12 +62,13 @@ public class UserController {
 		
 		List<User> users = userService.findByName(name);
 		
+		
 		if(users.size() > 1) {
 			return new ResponseEntity<String>("There are multiple users with this name", HttpStatus.CONFLICT);
 		}
 		else {
 			userService.deleteUser(users.get(0).getEmail());
-			return new ResponseEntity<String>("Successful Delelted User " + users.get(0).getName(), HttpStatus.OK);
+			return new ResponseEntity<String>("Successfully Deleted User " + users.get(0).getName(), HttpStatus.OK);
 		}
 	}
 	

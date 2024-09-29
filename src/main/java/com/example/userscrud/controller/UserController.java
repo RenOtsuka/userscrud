@@ -55,6 +55,20 @@ public class UserController {
 		userService.deleteUser(email);
 	}
 	
+	@DeleteMapping("/deleteName/{name}")
+	public ResponseEntity<?> deleteUserByName(@PathVariable String name){
+		
+		List<User> users = userService.findByName(name);
+		
+		if(users.size() > 1) {
+			return new ResponseEntity<String>("There are multiple users with this name", HttpStatus.CONFLICT);
+		}
+		else {
+			userService.deleteUser(users.get(0).getEmail());
+			return new ResponseEntity<String>("Successful Delelted User " + users.get(0).getName(), HttpStatus.OK);
+		}
+	}
+	
 	@PostMapping("")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user){
 		User savedUser = userService.createUser(user);

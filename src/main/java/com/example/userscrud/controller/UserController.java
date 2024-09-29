@@ -101,5 +101,4 @@ public class UserController {
 				.buildAndExpand(savedPost.getId()).toUri();
 		return ResponseEntity.created(location).build();
 	}
-	
 }
